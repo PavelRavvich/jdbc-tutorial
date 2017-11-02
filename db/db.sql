@@ -3,7 +3,7 @@ CREATE DATABASE phones_magazine ENCODING 'UTF-8';
 --Created 1 time.
 CREATE TABLE IF NOT EXISTS models (
   id   SERIAL PRIMARY KEY,
-  name VARCHAR(15)
+  name VARCHAR(15) UNIQUE
 );
 
 INSERT INTO models (id, name) VALUES (DEFAULT, 'samsung');
