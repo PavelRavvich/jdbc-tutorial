@@ -10,6 +10,12 @@ import java.util.List;
  */
 public interface PhoneDAO {
 
+    boolean addModel(Phone phone);
+
+    boolean deleteModel(Phone phone);
+
+    void addSale(Phone phone);
+
     BigInteger getSaleSum(Timestamp from, Timestamp to);
 
     List<String> getAllMarks();

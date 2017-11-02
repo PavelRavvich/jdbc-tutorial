@@ -21,6 +21,21 @@ public class PhoneDAOImpl implements PhoneDAO {
     }
 
     @Override
+    public boolean addModel(Phone phone) {
+        return false;
+    }
+
+    @Override
+    public boolean deleteModel(Phone phone) {
+        return false;
+    }
+
+    @Override
+    public void addSale(Phone phone) {
+
+    }
+
+    @Override
     public BigInteger getSaleSum(@NotNull final Timestamp from, @NotNull final Timestamp to) {
         return null;
     }
