@@ -1,6 +1,9 @@
 package ru.javavision.jdbc;
 
+import com.sun.istack.internal.NotNull;
+
 import java.math.BigInteger;
+import java.sql.Connection;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -10,9 +13,15 @@ import java.util.List;
  */
 public class PhoneDAOImpl implements PhoneDAO {
 
+    @NotNull final Connection connection;
+
+    public PhoneDAOImpl(@NotNull final Connection connection) {
+        starter();
+        this.connection = connection;
+    }
 
     @Override
-    public BigInteger getSaleSum(Timestamp from, Timestamp to) {
+    public BigInteger getSaleSum(@NotNull final Timestamp from, @NotNull final Timestamp to) {
         return null;
     }
 
@@ -22,12 +31,12 @@ public class PhoneDAOImpl implements PhoneDAO {
     }
 
     @Override
-    public List<String> getMarkSumLess(BigInteger sum) {
+    public List<String> getMarkSumLess(@NotNull final BigInteger sum) {
         return null;
     }
 
     @Override
-    public List<String> getMarkSumMore(BigInteger sum) {
+    public List<String> getMarkSumMore(@NotNull final BigInteger sum) {
         return null;
     }
 }
