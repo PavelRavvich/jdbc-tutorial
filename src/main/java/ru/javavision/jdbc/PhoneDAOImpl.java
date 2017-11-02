@@ -13,7 +13,7 @@ import java.util.List;
  */
 public class PhoneDAOImpl implements PhoneDAO {
 
-    @NotNull final Connection connection;
+    private @NotNull final Connection connection;
 
     public PhoneDAOImpl(@NotNull final Connection connection) {
         starter();
