@@ -31,4 +31,6 @@ public class Application {
             phoneDAO.closeConnection();
         }
     }
+
+    // TODO: 04/11/2017 перейти на BigDecimal!
 }

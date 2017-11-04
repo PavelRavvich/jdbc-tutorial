@@ -1,11 +1,13 @@
 package ru.javavision.jdbc;
 
 import com.sun.istack.internal.NotNull;
-import lombok.Getter;
 
 import java.math.BigInteger;
 import java.sql.*;
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Author : Pavel Ravvich.
