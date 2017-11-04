@@ -48,30 +48,30 @@ FROM models AS m;
 CREATE TABLE IF NOT EXISTS phones (
   id       SERIAL PRIMARY KEY,
   model_id INTEGER   NOT NULL,
-  prise    BIGINT    NOT NULL,
+  price    BIG    NOT NULL,
   date     TIMESTAMP NOT NULL,
   user_id  INTEGER   NOT NULL,
   FOREIGN KEY (model_id) REFERENCES models (id),
   FOREIGN KEY (user_id) REFERENCES users (id)
 );
 
-INSERT INTO phones (id, model_id, prise, date, user_id)
+INSERT INTO phones (id, model_id, price, date, user_id)
 VALUES (DEFAULT, 1, 58000, now(), 2);
 
-INSERT INTO phones (id, model_id, prise, date, user_id)
+INSERT INTO phones (id, model_id, price, date, user_id)
 VALUES (DEFAULT, 2, 90000, now(), 2);
 
-INSERT INTO phones (id, model_id, prise, date, user_id)
+INSERT INTO phones (id, model_id, price, date, user_id)
 VALUES (DEFAULT, 3, 30000, now(), 2);
 
-INSERT INTO phones (id, model_id, prise, date, user_id)
+INSERT INTO phones (id, model_id, price, date, user_id)
 VALUES (DEFAULT, 1, 64000, now(), 1);
 
-INSERT INTO phones (id, model_id, prise, date, user_id)
+INSERT INTO phones (id, model_id, price, date, user_id)
 VALUES (DEFAULT, 3, 35000, now(), 1);
 
 --Выборка общей суммы продаж по промежутку времени.
-SELECT sum(p.prise)
+SELECT sum(p.price)
 FROM phones AS p
 WHERE p.date >= '2017-11-04 00:16:22.123102' AND
       p.date <= '2017-12-05 23:21:31.59098';
@@ -80,7 +80,7 @@ WHERE p.date >= '2017-11-04 00:16:22.123102' AND
 SELECT *
 FROM models;
 
-SELECT sum(p.prise)
+SELECT sum(p.price)
 FROM phones AS p
   LEFT JOIN models AS m ON p.model_id = m.id
 WHERE m.name = 'samsung'
@@ -88,6 +88,14 @@ WHERE m.name = 'samsung'
       AND p.date <= '2017-12-05 23:21:31.59098';
 
 
+--Получить модели выручка которых меньше чем 42000 за промежуток времени
+select m.name, p.price
+from phones p
+  inner join models m on p.model_id = m.id
+where p.date between '2017-11-02 23:21:31.59098' and '2017-12-05 23:21:31.59098'
+group by m.id, m.name
+having sum(p.price) < 42000
+order by sum(p.price) desc;
 
 
 

@@ -14,17 +14,17 @@ import java.util.Set;
  */
 public interface PhoneDAO {
 
-    int addModel(Phone phone);
+    int addModel(String mark);
+
+    int getModelIdByName(String model);
 
     void addSale(Phone phone);
 
-    BigInteger getSaleSum(Timestamp from, Timestamp to);
+    BigInteger getRevenue(Timestamp from, Timestamp to);
 
-    List<String> geSaleSum(Set<String> models, Timestamp from, Timestamp to);
+    BigInteger getRevenue(String model, Timestamp from, Timestamp to);
 
-    BigInteger geSaleSum(String model, Timestamp from, Timestamp to);
-
-    List<String> getMarkSumMore(BigInteger sum, Timestamp from, Timestamp to);
+    Map<String, BigInteger> getMarkSumMore(BigInteger sum, Timestamp from, Timestamp to);
 
     /**
      * Java 8 only.
@@ -45,13 +45,16 @@ public interface PhoneDAO {
 
         private Timestamp saleDate;
 
-        public Phone(int id, BigInteger prise, Timestamp saleDate) {
-            this.id = id;
-            this.prise = prise;
-            this.saleDate = saleDate;
+        private PhoneModel phoneModel;
+
+        private int ownerId;
+
+        public int getOwnerId() {
+            return ownerId;
         }
 
-        public Phone() {
+        public void setOwnerId(int ownerId) {
+            this.ownerId = ownerId;
         }
 
         public int getId() {
@@ -60,6 +63,14 @@ public interface PhoneDAO {
 
         public void setId(int id) {
             this.id = id;
+        }
+
+        public PhoneModel getPhoneModel() {
+            return phoneModel;
+        }
+
+        public void setPhoneModel(PhoneModel name) {
+            this.phoneModel = name;
         }
 
         public BigInteger getPrise() {
@@ -76,6 +87,39 @@ public interface PhoneDAO {
 
         public void setSaleDate(Timestamp saleDate) {
             this.saleDate = saleDate;
+        }
+    }
+
+    class PhoneModel {
+
+        @NotNull
+        private int id;
+
+        @NotNull
+        private String name;
+
+        public PhoneModel(int id, String name) {
+            this.id = id;
+            this.name = name;
+        }
+
+        public PhoneModel() {
+        }
+
+        public int getId() {
+            return id;
+        }
+
+        public void setId(int id) {
+            this.id = id;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
         }
     }
 }
