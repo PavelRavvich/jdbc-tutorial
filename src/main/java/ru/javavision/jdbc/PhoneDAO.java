@@ -1,12 +1,10 @@
 package ru.javavision.jdbc;
 
-import com.sun.istack.internal.NotNull;
+import lombok.Data;
 
 import java.math.BigInteger;
 import java.sql.Timestamp;
-import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * Author : Pavel Ravvich.
@@ -24,10 +22,10 @@ public interface PhoneDAO {
 
     BigInteger getRevenue(String model, Timestamp from, Timestamp to);
 
-    Map<String, BigInteger> getMarkSumMore(BigInteger sum, Timestamp from, Timestamp to);
+    Map<String, BigInteger> getMarkSumLess(BigInteger sum, Timestamp from, Timestamp to);
 
     /**
-     * Java 8 only.
+     * Default method Java 8 only.
      */
     default void starter() {
         try {
@@ -37,6 +35,12 @@ public interface PhoneDAO {
         }
     }
 
+    /**
+     * Не забудте устоновить плагин lombok для IDE.
+     * IntelliJ IDEA -> Preferences -> Plugins ->  в поиске : lombok -> Install.
+     * Анотация @Data добавляет геттеры и сеттеры ко всем полям.
+     */
+    @Data
     class Phone {
 
         private int id;
@@ -48,78 +52,13 @@ public interface PhoneDAO {
         private PhoneModel phoneModel;
 
         private int ownerId;
-
-        public int getOwnerId() {
-            return ownerId;
-        }
-
-        public void setOwnerId(int ownerId) {
-            this.ownerId = ownerId;
-        }
-
-        public int getId() {
-            return id;
-        }
-
-        public void setId(int id) {
-            this.id = id;
-        }
-
-        public PhoneModel getPhoneModel() {
-            return phoneModel;
-        }
-
-        public void setPhoneModel(PhoneModel name) {
-            this.phoneModel = name;
-        }
-
-        public BigInteger getPrise() {
-            return prise;
-        }
-
-        public void setPrise(BigInteger prise) {
-            this.prise = prise;
-        }
-
-        public Timestamp getSaleDate() {
-            return saleDate;
-        }
-
-        public void setSaleDate(Timestamp saleDate) {
-            this.saleDate = saleDate;
-        }
     }
 
+    @Data
     class PhoneModel {
 
-        @NotNull
         private int id;
 
-        @NotNull
         private String name;
-
-        public PhoneModel(int id, String name) {
-            this.id = id;
-            this.name = name;
-        }
-
-        public PhoneModel() {
-        }
-
-        public int getId() {
-            return id;
-        }
-
-        public void setId(int id) {
-            this.id = id;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
     }
 }

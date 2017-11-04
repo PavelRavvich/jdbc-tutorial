@@ -48,7 +48,7 @@ FROM models AS m;
 CREATE TABLE IF NOT EXISTS phones (
   id       SERIAL PRIMARY KEY,
   model_id INTEGER   NOT NULL,
-  price    BIG    NOT NULL,
+  price    BIGINT    NOT NULL,
   date     TIMESTAMP NOT NULL,
   user_id  INTEGER   NOT NULL,
   FOREIGN KEY (model_id) REFERENCES models (id),

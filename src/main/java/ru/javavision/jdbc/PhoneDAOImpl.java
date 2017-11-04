@@ -1,6 +1,7 @@
 package ru.javavision.jdbc;
 
 import com.sun.istack.internal.NotNull;
+import lombok.Getter;
 
 import java.math.BigInteger;
 import java.sql.*;
@@ -13,6 +14,7 @@ import java.util.Map;
  */
 public class PhoneDAOImpl implements PhoneDAO {
 
+    @Getter
     @NotNull
     private final Connection connection;
 
@@ -171,7 +173,7 @@ public class PhoneDAOImpl implements PhoneDAO {
      * @return map: < name_model (String) , revenue_by_time_period (BigInteger) >.
      */
     @Override
-    public Map<String, BigInteger> getMarkSumMore(@NotNull final BigInteger sum, @NotNull final Timestamp from, @NotNull final Timestamp to) {
+    public Map<String, BigInteger> getMarkSumLess(@NotNull final BigInteger sum, @NotNull final Timestamp from, @NotNull final Timestamp to) {
 
         final Map<String, BigInteger> result = new HashMap<>();
 
@@ -195,7 +197,9 @@ public class PhoneDAOImpl implements PhoneDAO {
         return result;
     }
 
-
+    /**
+     * SQL queries.
+     */
     private enum SQL {
         ADD_MODEL("INSERT INTO models (id, name) VALUES (DEFAULT, (?)) RETURNING id"),
         GET_MODEL_ID("SELECT id FROM models WHERE name = (?)"),
