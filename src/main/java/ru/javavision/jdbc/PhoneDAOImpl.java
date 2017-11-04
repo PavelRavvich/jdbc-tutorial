@@ -14,7 +14,6 @@ import java.util.Map;
  */
 public class PhoneDAOImpl implements PhoneDAO {
 
-    @Getter
     @NotNull
     private final Connection connection;
 
@@ -23,6 +22,15 @@ public class PhoneDAOImpl implements PhoneDAO {
                         @NotNull final String url) throws SQLException {
         starter();
         this.connection = DriverManager.getConnection(url, user, password);
+    }
+
+    @Override
+    public void closeConnection() {
+        try {
+            connection.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -201,12 +209,12 @@ public class PhoneDAOImpl implements PhoneDAO {
      * SQL queries.
      */
     private enum SQL {
-        ADD_MODEL("INSERT INTO models (id, name) VALUES (DEFAULT, (?)) RETURNING id"),
-        GET_MODEL_ID("SELECT id FROM models WHERE name = (?)"),
-        ADD_SALE("INSERT INTO phones (id, model_id, price, date, user_id) VALUES (DEFAULT, (?), (?), now(), (?)) RETURNING id"),
-        GET_REVENUE_PERIOD("SELECT sum(p.price) FROM phones AS p WHERE p.date >= (?) AND p.date <= (?)"),
-        GET_REVENUE_PERIOD_MODEL("SELECT sum(p.price) FROM phones AS p WHERE m.name = (?) AND p.date >= (?) AND p.date <= (?)"),
-        GET_MODEL_REVENUE_BY_PERIOD_MIN_REVENUE("select m.name, p.price from phones p inner join models m on p.model_id = m.id " +
+        ADD_MODEL("INSERT INTO phone_models (id, name) VALUES (DEFAULT, (?)) RETURNING id"),
+        GET_MODEL_ID("SELECT id FROM phone_models WHERE name = (?)"),
+        ADD_SALE("INSERT INTO phones_sale (id, model_id, price, date, user_id) VALUES (DEFAULT, (?), (?), now(), (?)) RETURNING id"),
+        GET_REVENUE_PERIOD("SELECT sum(p.price) FROM phones_sale AS p WHERE p.date >= (?) AND p.date <= (?)"),
+        GET_REVENUE_PERIOD_MODEL("SELECT sum(p.price) FROM phones_sale AS p WHERE m.name = (?) AND p.date >= (?) AND p.date <= (?)"),
+        GET_MODEL_REVENUE_BY_PERIOD_MIN_REVENUE("select m.name, p.price from phones_sale p inner join phone_models m on p.model_id = m.id " +
                 "where p.date between (?) and (?) group by m.id, m.name having sum(p.price) < (?) order by sum(p.price) desc;");
 
         String v;

@@ -3,6 +3,7 @@ package ru.javavision.jdbc;
 import lombok.Data;
 
 import java.math.BigInteger;
+import java.sql.Connection;
 import java.sql.Timestamp;
 import java.util.Map;
 
@@ -11,6 +12,8 @@ import java.util.Map;
  * Created : 03/11/2017.
  */
 public interface PhoneDAO {
+
+    void closeConnection();
 
     int addModel(String mark);
 
@@ -36,9 +39,9 @@ public interface PhoneDAO {
     }
 
     /**
+     * Анотация @Data из библиотеки lombok добавляет геттеры и сеттеры ко всем полям класса.
      * Не забудте устоновить плагин lombok для IDE.
      * IntelliJ IDEA -> Preferences -> Plugins ->  в поиске : lombok -> Install.
-     * Анотация @Data добавляет геттеры и сеттеры ко всем полям.
      */
     @Data
     class Phone {
