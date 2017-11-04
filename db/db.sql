@@ -31,13 +31,13 @@ CREATE TABLE IF NOT EXISTS phone_models (
 
 INSERT INTO phone_models (id, name) VALUES (DEFAULT, 'samsung')
 RETURNING id;
-;
+
 INSERT INTO phone_models (id, name) VALUES (DEFAULT, 'iphone')
 RETURNING id;
-;
+
 INSERT INTO phone_models (id, name) VALUES (DEFAULT, 'xaomi')
 RETURNING id;
-;
+
 INSERT INTO phone_models (id, name) VALUES (DEFAULT, 'digma')
 RETURNING id;
 
@@ -87,16 +87,20 @@ WHERE m.name = 'samsung'
       AND p.date >= '2017-11-02 23:21:31.59098'
       AND p.date <= '2017-12-05 23:21:31.59098';
 
-
---Получить модели выручка которых меньше чем 42000 за промежуток времени
-select m.name, p.price
-from phones_sale p
-  inner join phone_models m on p.model_id = m.id
-where p.date between '2017-11-02 23:21:31.59098' and '2017-12-05 23:21:31.59098'
-group by m.id, m.name
-having sum(p.price) < 42000
-order by sum(p.price) desc;
-
+--Получить модели выручка которых меньше чем 100000 за промежуток времени
+SELECT
+  m.name,
+  sum(p.price) AS cost
+FROM (
+       SELECT *
+       FROM phones_sale
+       WHERE date BETWEEN '2017-11-02 23:21:31.59098' AND '2017-12-05 23:21:31.59098'
+     ) AS p
+  INNER JOIN phone_models AS m
+    ON p.model_id = m.id
+GROUP BY m.name
+HAVING sum(p.price) < 100000
+ORDER BY cost DESC;
 
 
 

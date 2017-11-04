@@ -6,12 +6,15 @@ import java.math.BigInteger;
 import java.sql.Connection;
 import java.sql.Timestamp;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Author : Pavel Ravvich.
  * Created : 03/11/2017.
  */
 public interface PhoneDAO {
+
+    Set<String> getAllModels();
 
     void closeConnection();
 

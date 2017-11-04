@@ -5,8 +5,7 @@ import lombok.Getter;
 
 import java.math.BigInteger;
 import java.sql.*;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Author : Pavel Ravvich.
@@ -206,6 +205,23 @@ public class PhoneDAOImpl implements PhoneDAO {
     }
 
     /**
+     * Get all phone models names from table phone_models.
+     */
+    public Set<String> getAllModels() {
+        final Set<String> result = new HashSet<>();
+        try (PreparedStatement statement = connection.prepareStatement(SQL.GET_MODEL_SET.v)) {
+            final ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                result.add(rs.getString(1));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+
+    /**
      * SQL queries.
      */
     private enum SQL {
@@ -214,8 +230,20 @@ public class PhoneDAOImpl implements PhoneDAO {
         ADD_SALE("INSERT INTO phones_sale (id, model_id, price, date, user_id) VALUES (DEFAULT, (?), (?), now(), (?)) RETURNING id"),
         GET_REVENUE_PERIOD("SELECT sum(p.price) FROM phones_sale AS p WHERE p.date >= (?) AND p.date <= (?)"),
         GET_REVENUE_PERIOD_MODEL("SELECT sum(p.price) FROM phones_sale AS p WHERE m.name = (?) AND p.date >= (?) AND p.date <= (?)"),
-        GET_MODEL_REVENUE_BY_PERIOD_MIN_REVENUE("select m.name, p.price from phones_sale p inner join phone_models m on p.model_id = m.id " +
-                "where p.date between (?) and (?) group by m.id, m.name having sum(p.price) < (?) order by sum(p.price) desc;");
+        GET_MODEL_REVENUE_BY_PERIOD_MIN_REVENUE("SELECT\n" +
+                "  m.name,\n" +
+                "  sum(p.price) AS cost\n" +
+                "FROM (\n" +
+                "       SELECT *\n" +
+                "       FROM phones_sale\n" +
+                "       WHERE date BETWEEN (?) AND (?)\n" +
+                "     ) AS p\n" +
+                "  INNER JOIN phone_models AS m\n" +
+                "    ON p.model_id = m.id\n" +
+                "GROUP BY m.name\n" +
+                "HAVING sum(p.price) < (?)\n" +
+                "ORDER BY cost DESC;"),
+        GET_MODEL_SET("SELECT name FROM phone_models;");
 
         String v;
 
