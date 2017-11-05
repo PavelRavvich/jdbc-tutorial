@@ -99,11 +99,11 @@ FROM (
   INNER JOIN phone_models AS m
     ON p.model_id = m.id
 GROUP BY m.name
-HAVING sum(p.price) < 100000
+HAVING sum(p.price) < 10000000
 ORDER BY cost DESC;
 
 
---Получить статистику продаж по убыванию моделей.
+--Получить статистику продаж по убыванию определенных моделей.
 SELECT
   m.name,
   sum(p.price) AS cost

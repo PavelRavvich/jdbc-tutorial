@@ -58,24 +58,16 @@ public class StatisticRepositoryImpl implements StatisticRepository {
                                               @NotNull final Statistic.TimeRange range,
                                               @NotNull final Comparator<Statistic> comp) {
 
-        final SortedSet<Statistic> result = new TreeSet<>(comp);
+        final SortedSet<Statistic> statistics = new TreeSet<>(comp);
 
         try (PreparedStatement statement = connection.prepareStatement(StatSQL.GET_STAT_REVENUE_LESS.v)) {
 
-            statement.setTimestamp(1, range.getFrom());
-            statement.setTimestamp(2, range.getTo());
+            execute(threshold, range, statement, statistics);
 
-            final ResultSet set = statement.executeQuery();
-
-            while (set.next()) {
-                final String modelName = set.getString(1);
-                final BigDecimal revenue = set.getBigDecimal(2);
-                result.add(new Statistic(range, modelName, revenue));
-            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return new ArrayList<>(result);
+        return new ArrayList<>(statistics);
     }
 
     @Override
@@ -83,24 +75,34 @@ public class StatisticRepositoryImpl implements StatisticRepository {
                                               @NotNull final Statistic.TimeRange range,
                                               @NotNull final Comparator<Statistic> comp) {
 
-        final SortedSet<Statistic> result = new TreeSet<>(comp);
+        final SortedSet<Statistic> statistics = new TreeSet<>(comp);
 
         try (PreparedStatement statement = connection.prepareStatement(StatSQL.GET_STAT_REVENUE_MORE.v)) {
 
-            statement.setTimestamp(1, range.getFrom());
-            statement.setTimestamp(2, range.getTo());
+            execute(threshold, range, statement, statistics);
 
-            final ResultSet set = statement.executeQuery();
-
-            while (set.next()) {
-                final String modelName = set.getString(1);
-                final BigDecimal revenue = set.getBigDecimal(2);
-                result.add(new Statistic(range, modelName, revenue));
-            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return new ArrayList<>(result);
+        return new ArrayList<>(statistics);
+    }
+
+    private void execute(@NotNull final BigDecimal threshold,
+                         @NotNull final Statistic.TimeRange range,
+                         @NotNull final PreparedStatement statement,
+                         @NotNull final SortedSet<Statistic> result) throws SQLException {
+
+        statement.setTimestamp(1, range.getFrom());
+        statement.setTimestamp(2, range.getTo());
+        statement.setBigDecimal(3, threshold);
+
+        final ResultSet set = statement.executeQuery();
+
+        while (set.next()) {
+            final String modelName = set.getString(1);
+            final BigDecimal revenue = set.getBigDecimal(2);
+            result.add(new Statistic(range, modelName, revenue));
+        }
     }
 
     enum StatSQL {

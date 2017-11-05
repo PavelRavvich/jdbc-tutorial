@@ -117,7 +117,9 @@ public class StatisticRepositoryImplTest {
      */
     @Test
     public void whenSendRevenuesThresholdThenReturnStatisticForPhoneModelsWhichHaveRevenuesLessThreshold() {
-
+        final BigDecimal threshold = new BigDecimal("100000");
+        final List<Statistic> statistics = repository.getStatRevenueLess(threshold, range, comparator);
+        assertThat(statistics.size(), is(2));
     }
 
     /**
@@ -125,6 +127,8 @@ public class StatisticRepositoryImplTest {
      */
     @Test
     public void whenSendRevenuesThresholdThenReturnStatisticForPhoneModelsWhichHaveRevenuesMoreThreshold() {
-
+        final BigDecimal threshold = new BigDecimal("90000");
+        final List<Statistic> statistics = repository.getStatRevenueMore(threshold, range, comparator);
+        assertThat(statistics.size(), is(2));
     }
 }
