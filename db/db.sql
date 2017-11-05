@@ -48,7 +48,7 @@ FROM phone_models AS m;
 CREATE TABLE IF NOT EXISTS phones_sale (
   id       SERIAL PRIMARY KEY,
   model_id INTEGER   NOT NULL,
-  price    BIGINT    NOT NULL,
+  price    DECIMAL   NOT NULL,
   date     TIMESTAMP NOT NULL,
   user_id  INTEGER   NOT NULL,
   FOREIGN KEY (model_id) REFERENCES phone_models (id),
@@ -103,7 +103,19 @@ HAVING sum(p.price) < 100000
 ORDER BY cost DESC;
 
 
-
+--Получить статистику продаж по убыванию моделей.
+SELECT
+  m.name,
+  sum(p.price) AS cost
+FROM (
+       SELECT *
+       FROM phones_sale
+       WHERE date BETWEEN '2017-11-02 23:21:31.59098' AND '2017-12-05 23:21:31.59098'
+     ) AS p
+  INNER JOIN phone_models AS m
+    ON p.model_id = m.id AND m.name = 'samsung'
+GROUP BY m.name
+ORDER BY cost DESC;
 
 
 

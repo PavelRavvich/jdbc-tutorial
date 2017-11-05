@@ -2,6 +2,7 @@ package ru.javavision.jdbc;
 
 import lombok.Data;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Connection;
 import java.sql.Timestamp;
@@ -28,7 +29,7 @@ public interface PhoneDAO {
 
     BigInteger getRevenue(String model, Timestamp from, Timestamp to);
 
-    Map<String, BigInteger> getMarkSumLess(BigInteger sum, Timestamp from, Timestamp to);
+    Map<String, BigDecimal> getMarkSumLess(BigDecimal sum, Timestamp from, Timestamp to);
 
     /**
      * Default method Java 8 only.
@@ -51,7 +52,7 @@ public interface PhoneDAO {
 
         private int id;
 
-        private BigInteger prise;
+        private BigDecimal prise;
 
         private Timestamp saleDate;
 

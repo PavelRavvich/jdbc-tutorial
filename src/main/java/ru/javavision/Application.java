@@ -2,10 +2,16 @@ package ru.javavision;
 
 import ru.javavision.jdbc.PhoneDAO;
 import ru.javavision.jdbc.PhoneDAOImpl;
+import ru.javavision.jdbc.StatisticDAO;
+import ru.javavision.jdbc.StatisticDAOImpl;
+import ru.javavision.model.PhoneModel;
+import ru.javavision.model.Statistic;
 import ru.javavision.service.PhoneService;
 import ru.javavision.service.PhoneServiceImpl;
 
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.util.Comparator;
 import java.util.SortedSet;
 
 /**
@@ -19,10 +25,21 @@ public class Application {
 
         try {
             phoneDAO = new PhoneDAOImpl("postgres", "1", "jdbc:postgresql://localhost:5432/phones_magazine");
-            final PhoneServiceImpl phoneService = new PhoneServiceImpl(phoneDAO);
-            final SortedSet<PhoneService.Statistic> wholeStat = phoneService.getWholeStat();
-            wholeStat.forEach(System.out::println);
+//            final PhoneServiceImpl phoneService = new PhoneServiceImpl(phoneDAO);
+//            final SortedSet<Statistic> wholeStat = phoneService.getStatLastYear();
+//            wholeStat.forEach(System.out::println);
 
+            StatisticDAO dao =  new StatisticDAOImpl("postgres", "1", "jdbc:postgresql://localhost:5432/phones_magazine");
+
+            final PhoneModel model = new PhoneModel();
+            model.setName("samsung");
+
+            dao.getStat(
+                    Comparator.comparing(Statistic::getRevenue),
+                    new Timestamp(System.currentTimeMillis() - 31536000000L),
+                    new Timestamp(System.currentTimeMillis()),
+                    model
+                    ).forEach(System.out::println);
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -32,5 +49,4 @@ public class Application {
         }
     }
 
-    // TODO: 04/11/2017 перейти на BigDecimal!
 }

@@ -2,6 +2,7 @@ package ru.javavision.jdbc;
 
 import com.sun.istack.internal.NotNull;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.*;
 import java.util.HashMap;
@@ -182,9 +183,9 @@ public class PhoneDAOImpl implements PhoneDAO {
      * @return map: < name_model (String) , revenue_by_time_period (BigInteger) >.
      */
     @Override
-    public Map<String, BigInteger> getMarkSumLess(@NotNull final BigInteger sum, @NotNull final Timestamp from, @NotNull final Timestamp to) {
+    public Map<String, BigDecimal> getMarkSumLess(@NotNull final BigDecimal sum, @NotNull final Timestamp from, @NotNull final Timestamp to) {
 
-        final Map<String, BigInteger> result = new HashMap<>();
+        final Map<String, BigDecimal> result = new HashMap<>();
 
         try (PreparedStatement statement = connection.prepareStatement(SQL.GET_MODEL_REVENUE_BY_PERIOD_MIN_REVENUE.v)) {
 
@@ -196,7 +197,7 @@ public class PhoneDAOImpl implements PhoneDAO {
 
             while (set.next()) {
                 final String modelName = set.getString(1);
-                final BigInteger revenue = new BigInteger(String.valueOf(set.getInt(2)));
+                final BigDecimal revenue = set.getBigDecimal(2);
                 result.put(modelName, revenue);
             }
         } catch (SQLException e) {
@@ -226,7 +227,7 @@ public class PhoneDAOImpl implements PhoneDAO {
     /**
      * SQL queries.
      */
-    private enum SQL {
+    public enum SQL {
         ADD_MODEL("INSERT INTO phone_models (id, name) VALUES (DEFAULT, (?)) RETURNING id"),
         GET_MODEL_ID("SELECT id FROM phone_models WHERE name = (?)"),
         ADD_SALE("INSERT INTO phones_sale (id, model_id, price, date, user_id) VALUES (DEFAULT, (?), (?), now(), (?)) RETURNING id"),
