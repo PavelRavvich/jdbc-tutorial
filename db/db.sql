@@ -113,7 +113,7 @@ FROM (
        WHERE date BETWEEN '2017-11-02 23:21:31.59098' AND '2017-12-05 23:21:31.59098'
      ) AS p
   INNER JOIN phone_models AS m
-    ON p.model_id = m.id AND m.name = 'samsung'
+    ON p.model_id = m.id AND (m.name = 'samsung' OR m.name = 'iphone' OR m.name = 'xaomi')
 GROUP BY m.name
 ORDER BY cost DESC;
 

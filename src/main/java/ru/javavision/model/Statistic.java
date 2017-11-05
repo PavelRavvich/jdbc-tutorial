@@ -20,12 +20,21 @@ import java.sql.Timestamp;
 @ToString
 public class Statistic {
 
-    private Timestamp from;
-
-    private Timestamp to;
+    private TimeRange range;
 
     private String model;
 
     private BigDecimal revenue;
+
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @ToString
+    public static class TimeRange {
+
+        private Timestamp from;
+
+        private Timestamp to;
+    }
 
 }

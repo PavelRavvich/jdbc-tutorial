@@ -34,18 +34,18 @@ public class PhoneServiceImpl implements PhoneService {
     public SortedSet<Statistic> getStatLastYear() {
         final SortedSet<Statistic> result = new TreeSet<>((o1, o2) -> -(o1.getRevenue().compareTo(o2.getRevenue())));
 
-        final Timestamp from = new Timestamp(System.currentTimeMillis() - 31536000000L);
-        final Timestamp to = new Timestamp(System.currentTimeMillis());
+        final Statistic.TimeRange range = new Statistic.TimeRange(
+                new Timestamp(System.currentTimeMillis() - 31536000000L), new Timestamp(System.currentTimeMillis()));
         final BigDecimal revenue = BigDecimal.valueOf(Long.MAX_VALUE);
 
         final Set<String> allModels = phoneDAO.getAllModels();
-        final Map<String, BigDecimal> statistics = phoneDAO.getMarkSumLess(revenue, from, to);
+        final Map<String, BigDecimal> statistics = phoneDAO.getMarkSumLess(revenue, range.getFrom(), range.getTo());
         allModels.forEach(model -> {
             final BigDecimal saleSum = statistics.get(model);
             if (saleSum != null) {
-                result.add(new Statistic(from, to, model, saleSum));
+                result.add(new Statistic(range, model, saleSum));
             } else {
-                result.add(new Statistic(from, to, model, new BigDecimal("0")));
+                result.add(new Statistic(range, model, new BigDecimal("0")));
             }
         });
         return result;

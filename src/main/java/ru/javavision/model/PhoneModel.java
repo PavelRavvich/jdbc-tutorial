@@ -11,6 +11,5 @@ public class PhoneModel {
 
     private int id;
 
-
     private String name;
 }

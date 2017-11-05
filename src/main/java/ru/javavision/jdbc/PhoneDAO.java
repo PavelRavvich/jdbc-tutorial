@@ -4,7 +4,6 @@ import lombok.Data;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.sql.Connection;
 import java.sql.Timestamp;
 import java.util.Map;
 import java.util.Set;
