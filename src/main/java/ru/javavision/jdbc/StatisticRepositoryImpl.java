@@ -13,7 +13,7 @@ import java.util.*;
  * Author : Pavel Ravvich.
  * Created : 05/11/2017.
  */
-public class StatisticRepositoryImpl implements StatisticRepository {
+public class StatisticRepositoryImpl implements StatisticRepository<Statistic, Statistic.TimeRange> {
 
     @NotNull
     private final Connection connection;

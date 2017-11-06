@@ -8,13 +8,13 @@ import java.math.BigDecimal;
 import java.util.Comparator;
 import java.util.List;
 
-public interface StatisticRepository {
+public interface StatisticRepository<Entity extends Statistic, Range extends Statistic.TimeRange> {
 
-    List<Statistic> getStat(List<PhoneModel> models, Statistic.TimeRange range, Comparator<Statistic> comp);
+    List<Entity> getStat(List<PhoneModel> models, Range range, Comparator<Entity> comp);
 
-    List<Statistic> getStatRevenueLess(BigDecimal threshold, Statistic.TimeRange range, Comparator<Statistic> comp);
+    List<Entity> getStatRevenueLess(BigDecimal threshold, Range range, Comparator<Entity> comp);
 
-    List<Statistic> getStatRevenueMore(BigDecimal threshold, Statistic.TimeRange range, Comparator<Statistic> comp);
+    List<Entity> getStatRevenueMore(BigDecimal threshold, Range range, Comparator<Entity> comp);
 
     default String modelWildcards(final @NotNull int models) {
         if (models == 0) {

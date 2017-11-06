@@ -1,18 +1,5 @@
 package ru.javavision;
 
-import ru.javavision.jdbc.PhoneDAO;
-import ru.javavision.jdbc.PhoneDAOImpl;
-import ru.javavision.jdbc.StatisticRepository;
-import ru.javavision.jdbc.StatisticRepositoryImpl;
-import ru.javavision.model.PhoneModel;
-import ru.javavision.model.Statistic;
-
-import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-
 /**
  * Author : Pavel Ravvich.
  * Created : 02/11/2017.

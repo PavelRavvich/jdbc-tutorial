@@ -1,12 +1,6 @@
 package ru.javavision.jdbc;
 
-import lombok.Data;
-
-import java.math.BigDecimal;
-import java.math.BigInteger;
-import java.sql.Timestamp;
-import java.util.Map;
-import java.util.Set;
+import ru.javavision.model.Phone;
 
 /**
  * Author : Pavel Ravvich.
@@ -14,21 +8,13 @@ import java.util.Set;
  */
 public interface PhoneDAO {
 
-    Set<String> getAllModels();
+    Phone get(String modelName);
 
-    void closeConnection();
+    boolean add(Phone phone);
 
-    int addModel(String mark);
+    boolean update(Phone phone);
 
-    int getModelIdByName(String model);
-
-    void addSale(Phone phone);
-
-    BigInteger getRevenue(Timestamp from, Timestamp to);
-
-    BigInteger getRevenue(String model, Timestamp from, Timestamp to);
-
-    Map<String, BigDecimal> getMarkSumLess(BigDecimal sum, Timestamp from, Timestamp to);
+    boolean delete(Phone phone);
 
     /**
      * Default method Java 8 only.
@@ -39,32 +25,5 @@ public interface PhoneDAO {
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
-    }
-
-    /**
-     * Анотация @Data из библиотеки lombok добавляет геттеры и сеттеры ко всем полям класса.
-     * Не забудте устоновить плагин lombok для IDE.
-     * IntelliJ IDEA -> Preferences -> Plugins ->  в поиске : lombok -> Install.
-     */
-    @Data
-    class Phone {
-
-        private int id;
-
-        private BigDecimal prise;
-
-        private Timestamp saleDate;
-
-        private PhoneModel phoneModel;
-
-        private int ownerId;
-    }
-
-    @Data
-    class PhoneModel {
-
-        private int id;
-
-        private String name;
     }
 }

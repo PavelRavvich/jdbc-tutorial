@@ -11,14 +11,20 @@ INSERT INTO roles (id, role) VALUES (DEFAULT, 'user');
 
 CREATE TABLE IF NOT EXISTS users (
   id       SERIAL PRIMARY KEY,
-  login    VARCHAR(10) NOT NULL,
-  password VARCHAR(10) NOT NULL,
+  login    VARCHAR(10) UNIQUE NOT NULL,
+  password VARCHAR(10) UNIQUE NOT NULL,
   role     INTEGER     NOT NULL,
   FOREIGN KEY (role) REFERENCES roles (id)
 );
 
-INSERT INTO users (id, login, password, role)
-VALUES (DEFAULT, 'admin', '123', 1);
+--Выгрузить пользователя с ролью.
+SELECT u.id, u.login, u.password, r.id AS rol_id, r.role FROM users AS u LEFT JOIN roles AS r ON u.role = r.id WHERE u.login = (?);
+--Удалить пользователя
+DELETE FROM users WHERE id = (?) AND login = (?) AND password = (?) RETURNING id;
+--Обновить пользователя
+UPDATE users SET password = (?) WHERE id = (?) RETURNING id;
+
+INSERT INTO users (id, login, password, role) VALUES (DEFAULT, 'admin', '123', 1);
 
 INSERT INTO users (id, login, password, role)
 VALUES (DEFAULT, 'user', '123', 2);
@@ -116,7 +122,5 @@ FROM (
     ON p.model_id = m.id AND (m.name = 'samsung' OR m.name = 'iphone' OR m.name = 'xaomi')
 GROUP BY m.name
 ORDER BY cost DESC;
-
-
 
 

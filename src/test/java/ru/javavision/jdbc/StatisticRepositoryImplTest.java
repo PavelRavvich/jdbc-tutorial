@@ -25,7 +25,7 @@ import static org.junit.Assert.assertThat;
 public class StatisticRepositoryImplTest {
 
     @NotNull
-    private StatisticRepository repository;
+    private StatisticRepository<Statistic, Statistic.TimeRange> repository;
 
     @NotNull
     private Connection connection;
