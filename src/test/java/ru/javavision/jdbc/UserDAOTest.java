@@ -76,7 +76,7 @@ public class UserDAOTest {
         final boolean result = dao.add(user);
         assertThat(result, is(true));
         //Clear test data.
-        dao.delete(user);
+        dao.delete(dao.get("test"));
     }
 
     @Test
@@ -95,6 +95,26 @@ public class UserDAOTest {
     @Test
     public void whenUserNotExistThenReturnFalse() {
         assertFalse(dao.delete(new User(0, "test", "test", new User.Role(1, "admin"))));
+    }
+
+    @Test
+    public void whenUpdateExistUserThenPasswordUpdated() {
+        final User user = new User(0, "test", "test", new User.Role(1, "admin"));
+        dao.add(user);
+        final User gutted = dao.get("test");
+        gutted.setPassword("updated");
+        final boolean result = dao.update(gutted);
+        final User updated = dao.get("test");
+        assertThat(result, is(true));
+        assertThat(updated.getPassword(), is("updated"));
+
+        //Clear test data.
+        dao.delete(updated);
+    }
+
+    @Test
+    public void whenUpdateNotExistedUserThenPasswordUpdated() {
+        assertThat(dao.update(new User()), is(false));
     }
 
     //tensorflow
