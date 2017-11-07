@@ -1,37 +1,31 @@
 package ru.javavision;
 
+import java.sql.*;
+
 /**
  * Author : Pavel Ravvich.
  * Created : 02/11/2017.
  */
 public class Application {
-//    public static void main(String[] args) {
-//
-//        PhoneDAO phoneDAO = null;
-//
-//        try {
-////            phoneDAO = new PhoneDAOImpl("postgres", "1", "jdbc:postgresql://localhost:5432/phones_magazine");
-////
-////            StatisticRepository dao =  new StatisticRepositoryImpl("postgres", "1", "jdbc:postgresql://localhost:5432/phones_magazine");
-////
-////            final PhoneModel model = new PhoneModel();
-////            model.setName("samsung");
-////            List<PhoneModel> models = new ArrayList<>();
-////            models.add(model);
-////            dao.getStat(
-////                    models,
-////                    new Statistic.TimeRange(
-////                            new Timestamp(System.currentTimeMillis() - 31536000000L),
-////                            new Timestamp(System.currentTimeMillis())),
-////                    Comparator.comparing(Statistic::getRevenue)
-////                    ).forEach(System.out::println);
-//
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        } finally {
-//            assert phoneDAO != null;
-//            phoneDAO.closeConnection();
-//        }
-//    }
+    public static void main(String[] args) throws SQLException {
+        final String user = "postgres";
+        final String password = "1";
+        final String url = "jdbc:postgresql://localhost:5432/phones_magazine";
 
+        final Connection connection = DriverManager.getConnection(url, user, password);
+
+
+        try (PreparedStatement statement = connection.prepareStatement("SELECT * FROM users WHERE id = (?)")) {
+            statement.setInt(1, 1);
+            final ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                String byName = "login: " + resultSet.getString("login");
+                String byIndex = "password" + resultSet.getString(3);
+                System.out.println(byName);
+                System.out.println(byIndex);
+            }
+        } finally {
+            connection.close();
+        }
+    }
 }
