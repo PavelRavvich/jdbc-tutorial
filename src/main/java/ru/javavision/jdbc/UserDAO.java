@@ -15,16 +15,50 @@ import java.sql.SQLException;
  * Created : 06/11/2017.
  */
 public class UserDAO implements DAO<User, String> {
-
+    /**
+     * Connection of database.
+     */
     @NotNull
     private final Connection connection;
 
+    /**
+     * Init database connection.
+     *
+     * @param connection of database.
+     */
     public UserDAO(final Connection connection) {
         this.connection = connection;
     }
 
+    /**
+     * Create User in database.
+     *
+     * @param user for create.
+     * @return false if User already exist. If creating success true.
+     */
     @Override
-    public User get(@NotNull final String login) {
+    public boolean create(@NotNull final User user) {
+        boolean result = false;
+
+        try (PreparedStatement statement = connection.prepareStatement(SQLUser.INSERT.QUERY)) {
+            statement.setString(1, user.getLogin());
+            statement.setString(2, user.getPassword());
+            statement.setInt(3,user.getRole().getId());
+            result = statement.executeQuery().next();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    /**
+     * Select User by login.
+     *
+     * @param login for select.
+     * @return return valid entity if she exist. If entity does not exist return empty User with id = -1.
+     */
+    @Override
+    public User read(@NotNull final String login) {
         final User result = new User();
         result.setId(-1);
 
@@ -43,21 +77,12 @@ public class UserDAO implements DAO<User, String> {
         return result;
     }
 
-    @Override
-    public boolean add(@NotNull final User user) {
-        boolean result = false;
-
-        try (PreparedStatement statement = connection.prepareStatement(SQLUser.INSERT.QUERY)) {
-            statement.setString(1, user.getLogin());
-            statement.setString(2, user.getPassword());
-            statement.setInt(3,user.getRole().getId());
-            result = statement.executeQuery().next();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return result;
-    }
-
+    /**
+     * Update User's password by id.
+     *
+     * @param user new user's state.
+     * @return True if success. False if fail.
+     */
     @Override
     public boolean update(@NotNull final User user) {
         boolean result = false;
@@ -72,6 +97,12 @@ public class UserDAO implements DAO<User, String> {
         return result;
     }
 
+    /**
+     * Delete User by id AND login AND password.
+     *
+     * @param user for delete.
+     * @return true if User was deleted. False if User not exist.
+     */
     @Override
     public boolean delete(@NotNull final User user) {
         boolean result = false;
@@ -87,6 +118,9 @@ public class UserDAO implements DAO<User, String> {
         return result;
     }
 
+    /**
+     * SQL queries for users table.
+     */
     enum SQLUser {
         GET("SELECT u.id, u.login, u.password, r.id AS rol_id, r.role FROM users AS u LEFT JOIN roles AS r ON u.role = r.id WHERE u.login = (?)"),
         INSERT("INSERT INTO users (id, login, password, role) VALUES (DEFAULT, (?), (?), (?)) RETURNING id"),

@@ -11,24 +11,42 @@ import java.sql.SQLException;
 /**
  * Author : Pavel Ravvich.
  * Created : 06/11/2017.
- * <p>
- * PhoneModelDAO
  */
 public class PhoneModelDAO implements DAO<PhoneModel, String> {
 
+    /**
+     * Connection of database.
+     */
     @NotNull
     private final Connection connection;
 
+    /**
+     * Init database connection.
+     *
+     * @param connection of database.
+     */
     public PhoneModelDAO(@NotNull final Connection connection) {
         this.connection = connection;
     }
 
+    /**
+     * Check exist PhoneModel by name.
+     *
+     * @param name for select.
+     * @return true if exist. False if does not exist.
+     */
     private boolean isExist(@NotNull final String name) {
-        return get(name).getId() != -1;
+        return read(name).getId() != -1;
     }
 
+    /**
+     * Select PhoneModel by name.
+     *
+     * @param name for select.
+     * @return return valid entity if she exist. If entity does not exist return empty PhoneModel with id = -1.
+     */
     @Override
-    public PhoneModel get(@NotNull final String name) {
+    public PhoneModel read(@NotNull final String name) {
 
         final PhoneModel result = new PhoneModel();
         result.setName(name);
@@ -50,9 +68,14 @@ public class PhoneModelDAO implements DAO<PhoneModel, String> {
         return result;
     }
 
+    /**
+     * Update PhoneModel' name by id.
+     *
+     * @param model with selected id.
+     * @return updated entity.
+     */
     @Override
     public boolean update(@NotNull final PhoneModel model) {
-
         boolean result = false;
 
         try (PreparedStatement statement = connection.prepareStatement(ModelPhoneSQL.UPDATE.QUERY)) {
@@ -65,6 +88,12 @@ public class PhoneModelDAO implements DAO<PhoneModel, String> {
         return result;
     }
 
+    /**
+     * Delete PhoneModel by name.
+     *
+     * @param model for delete.
+     * @return true if PhoneModel was deleted. False if PhoneModel not exist.
+     */
     @Override
     public boolean delete(@NotNull final PhoneModel model) {
         if (!isExist(model.getName())) return false;
@@ -79,10 +108,14 @@ public class PhoneModelDAO implements DAO<PhoneModel, String> {
         return result;
     }
 
-
-
+    /**
+     * Create PhoneModel in database.
+     *
+     * @param model for create.
+     * @return false if PhoneModel already exist. If creating success true.
+     */
     @Override
-    public boolean add(@NotNull final PhoneModel model) {
+    public boolean create(@NotNull final PhoneModel model) {
         if (isExist(model.getName())) return false;
 
         boolean result = false;
@@ -93,10 +126,12 @@ public class PhoneModelDAO implements DAO<PhoneModel, String> {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
         return result;
     }
 
+    /**
+     * SQL queries for phone_models table.
+     */
     enum ModelPhoneSQL {
         GET("SELECT id FROM phone_models WHERE name = (?)"),
         DELETE("DELETE FROM phone_models WHERE name = (?) RETURNING id"),

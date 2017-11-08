@@ -50,30 +50,30 @@ public class PhoneModelDAOTest {
     }
 
     /**
-     * @see ru.javavision.jdbc.PhoneModelDAO#get(Object).
+     * @see ru.javavision.jdbc.PhoneModelDAO#read(Object).
      */
     @Test
     public void whenModelIsExistThenReturnPhoneModelWithId() {
-        final PhoneModel result = dao.get("samsung");
+        final PhoneModel result = dao.read("samsung");
         assertThat(result, is(new PhoneModel(1, "samsung")));
     }
 
     /**
-     * @see ru.javavision.jdbc.PhoneModelDAO#add(Object).
+     * @see ru.javavision.jdbc.PhoneModelDAO#create(Object).
      */
     @Test
     public void whenAddNewPhoneModelThenPhoneModelAddedAndReturnFalse() {
-        final boolean result = dao.add(model);
+        final boolean result = dao.create(model);
         assertThat(result, is(true));
     }
 
     /**
-     * @see ru.javavision.jdbc.PhoneModelDAO#add(Object).
+     * @see ru.javavision.jdbc.PhoneModelDAO#create(Object).
      */
     @Test
     public void whenAddPhoneModelWhichAlreadyExistThenReturnFalse() {
-        dao.add(model);
-        final boolean result = dao.add(model);
+        dao.create(model);
+        final boolean result = dao.create(model);
         assertThat(result, is(false));
     }
 
@@ -82,7 +82,7 @@ public class PhoneModelDAOTest {
      */
     @Test
     public void whenDeletePhoneModelWhichExistThenReturnTrue() {
-        dao.add(model);
+        dao.create(model);
         final boolean result = dao.delete(model);
         assertThat(result, is(true));
     }
@@ -98,12 +98,12 @@ public class PhoneModelDAOTest {
 
     @Test
     public void whenUpdateSuccessThenModelNameSetNewValue() {
-        dao.add(model);
+        dao.create(model);
         model.setName("updated");
-        model.setId(dao.get("test").getId());
+        model.setId(dao.read("test").getId());
         final boolean result = dao.update(model);
         assertThat(result, is(true));
-        assertThat(dao.get("updated").getName(), is("updated"));
+        assertThat(dao.read("updated").getName(), is("updated"));
     }
 
     @Test

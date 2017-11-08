@@ -46,11 +46,11 @@ public class UserDAOTest {
     }
 
     /**
-     * @see ru.javavision.jdbc.UserDAO#get(Object).
+     * @see ru.javavision.jdbc.UserDAO#read(Object).
      */
     @Test
     public void whenGetUserWhichExistThenReturnUser() {
-        final User user = dao.get("admin");
+        final User user = dao.read("admin");
         final User expected = new User();
         expected.setLogin("admin");
         expected.setPassword("123");
@@ -59,31 +59,31 @@ public class UserDAOTest {
     }
 
     /**
-     * @see ru.javavision.jdbc.UserDAO#get(Object).
+     * @see ru.javavision.jdbc.UserDAO#read(Object).
      */
     @Test
     public void whenUserIsNotExistThenReturnEmptyUserObj() {
-        final User user = dao.get("xxx");
+        final User user = dao.read("xxx");
         assertThat(user.getId(), is(-1));
     }
 
     /**
-     * @see ru.javavision.jdbc.UserDAO#add(Object).
+     * @see ru.javavision.jdbc.UserDAO#create(Object).
      */
     @Test
     public void whenAddUserWhichNotExistThenReturnUser() {
         final User user = new User(0, "test", "test", new User.Role(1, "admin"));
-        final boolean result = dao.add(user);
+        final boolean result = dao.create(user);
         assertThat(result, is(true));
         //Clear test data.
-        dao.delete(dao.get("test"));
+        dao.delete(dao.read("test"));
     }
 
     @Test
     public void whenUserWhichExistDeletedThenReturnTrue() {
         final User user = new User(0, "test", "test", new User.Role(1, "admin"));
-        dao.add(user);
-        final User state = dao.get("test");
+        dao.create(user);
+        final User state = dao.read("test");
         boolean before = state.getId() != -1;
         user.setId(state.getId());
 
@@ -100,11 +100,11 @@ public class UserDAOTest {
     @Test
     public void whenUpdateExistUserThenPasswordUpdated() {
         final User user = new User(0, "test", "test", new User.Role(1, "admin"));
-        dao.add(user);
-        final User gutted = dao.get("test");
+        dao.create(user);
+        final User gutted = dao.read("test");
         gutted.setPassword("updated");
         final boolean result = dao.update(gutted);
-        final User updated = dao.get("test");
+        final User updated = dao.read("test");
         assertThat(result, is(true));
         assertThat(updated.getPassword(), is("updated"));
 
