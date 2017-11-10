@@ -46,7 +46,7 @@ public class UserDAOTest {
     }
 
     /**
-     * @see ru.javavision.jdbc.UserDAO#read(Object).
+     * @see ru.javavision.jdbc.UserDAO#read(String).
      */
     @Test
     public void whenGetUserWhichExistThenReturnUser() {
@@ -59,7 +59,7 @@ public class UserDAOTest {
     }
 
     /**
-     * @see ru.javavision.jdbc.UserDAO#read(Object).
+     * @see ru.javavision.jdbc.UserDAO#read(String).
      */
     @Test
     public void whenUserIsNotExistThenReturnEmptyUserObj() {
@@ -68,7 +68,7 @@ public class UserDAOTest {
     }
 
     /**
-     * @see ru.javavision.jdbc.UserDAO#create(Object).
+     * @see ru.javavision.jdbc.UserDAO#create(User).
      */
     @Test
     public void whenAddUserWhichNotExistThenReturnUser() {
@@ -79,6 +79,9 @@ public class UserDAOTest {
         dao.delete(dao.read("test"));
     }
 
+    /**
+     * @see ru.javavision.jdbc.UserDAO#delete(User).
+     */
     @Test
     public void whenUserWhichExistDeletedThenReturnTrue() {
         final User user = new User(0, "test", "test", new User.Role(1, "admin"));
@@ -92,11 +95,17 @@ public class UserDAOTest {
         assertTrue(after);
     }
 
+    /**
+     * @see ru.javavision.jdbc.UserDAO#delete(User).
+     */
     @Test
     public void whenUserNotExistThenReturnFalse() {
         assertFalse(dao.delete(new User(0, "test", "test", new User.Role(1, "admin"))));
     }
 
+    /**
+     * @see ru.javavision.jdbc.UserDAO#update(User).
+     */
     @Test
     public void whenUpdateExistUserThenPasswordUpdated() {
         final User user = new User(0, "test", "test", new User.Role(1, "admin"));
@@ -112,10 +121,11 @@ public class UserDAOTest {
         dao.delete(updated);
     }
 
+    /**
+     * @see ru.javavision.jdbc.UserDAO#update(User).
+     */
     @Test
     public void whenUpdateNotExistedUserThenPasswordUpdated() {
         assertThat(dao.update(new User()), is(false));
     }
-
-    //tensorflow
 }

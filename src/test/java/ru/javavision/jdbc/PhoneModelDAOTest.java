@@ -50,7 +50,7 @@ public class PhoneModelDAOTest {
     }
 
     /**
-     * @see ru.javavision.jdbc.PhoneModelDAO#read(Object).
+     * @see ru.javavision.jdbc.PhoneModelDAO#read(String).
      */
     @Test
     public void whenModelIsExistThenReturnPhoneModelWithId() {
@@ -59,7 +59,7 @@ public class PhoneModelDAOTest {
     }
 
     /**
-     * @see ru.javavision.jdbc.PhoneModelDAO#create(Object).
+     * @see ru.javavision.jdbc.PhoneModelDAO#create(PhoneModel).
      */
     @Test
     public void whenAddNewPhoneModelThenPhoneModelAddedAndReturnFalse() {
@@ -68,7 +68,7 @@ public class PhoneModelDAOTest {
     }
 
     /**
-     * @see ru.javavision.jdbc.PhoneModelDAO#create(Object).
+     * @see ru.javavision.jdbc.PhoneModelDAO#create(PhoneModel).
      */
     @Test
     public void whenAddPhoneModelWhichAlreadyExistThenReturnFalse() {
@@ -78,7 +78,7 @@ public class PhoneModelDAOTest {
     }
 
     /**
-     * @see ru.javavision.jdbc.PhoneModelDAO#delete(Object) .
+     * @see ru.javavision.jdbc.PhoneModelDAO#delete(PhoneModel) .
      */
     @Test
     public void whenDeletePhoneModelWhichExistThenReturnTrue() {
@@ -88,7 +88,7 @@ public class PhoneModelDAOTest {
     }
 
     /**
-     * @see ru.javavision.jdbc.PhoneModelDAO#delete(Object) .
+     * @see ru.javavision.jdbc.PhoneModelDAO#delete(PhoneModel) .
      */
     @Test
     public void whenDeletePhoneModelWhichNotExistThenReturnFalse() {
@@ -96,6 +96,9 @@ public class PhoneModelDAOTest {
         assertThat(result, is(false));
     }
 
+    /**
+     * @see ru.javavision.jdbc.PhoneModelDAO#update(PhoneModel).
+     */
     @Test
     public void whenUpdateSuccessThenModelNameSetNewValue() {
         dao.create(model);
@@ -106,6 +109,9 @@ public class PhoneModelDAOTest {
         assertThat(dao.read("updated").getName(), is("updated"));
     }
 
+    /**
+     * @see ru.javavision.jdbc.PhoneModelDAO#update(PhoneModel).
+     */
     @Test
     public void whenTryUpdatePhoneModelWhichNotExistThenReturnFalse() {
         final boolean result = dao.update(new PhoneModel(Integer.MAX_VALUE, "xxx"));
