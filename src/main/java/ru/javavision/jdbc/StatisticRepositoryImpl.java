@@ -29,8 +29,8 @@ public class StatisticRepositoryImpl implements StatisticRepository<Statistic, S
      * Get statistic by sales.
      *
      * @param models for select.
-     * @param range time for select.
-     * @param comp for result sorting
+     * @param range  time for select.
+     * @param comp   for result sorting
      * @return statistic for decremented models.
      */
     @Override
@@ -68,8 +68,8 @@ public class StatisticRepositoryImpl implements StatisticRepository<Statistic, S
      * Get statistic for models which revenues less threshold.
      *
      * @param threshold the lower sum sale threshold for select.
-     * @param range of time for select.
-     * @param comp  for result sorting
+     * @param range     of time for select.
+     * @param comp      for result sorting
      * @return statistics of with revenues less threshold.
      */
     @Override
@@ -93,8 +93,8 @@ public class StatisticRepositoryImpl implements StatisticRepository<Statistic, S
      * Get statistic for models which revenues more threshold.
      *
      * @param threshold the more sum sale threshold for select.
-     * @param range of time for select.
-     * @param comp  for result sorting
+     * @param range     of time for select.
+     * @param comp      for result sorting
      * @return statistics of with revenues more threshold.
      */
     @Override
@@ -118,9 +118,9 @@ public class StatisticRepositoryImpl implements StatisticRepository<Statistic, S
      * Set wildcards and fill result obj.
      *
      * @param threshold for select.
-     * @param range for select.
+     * @param range     for select.
      * @param statement for query.
-     * @param result for aggregation result of query.
+     * @param result    for aggregation result of query.
      */
     private void execute(@NotNull final BigDecimal threshold,
                          @NotNull final Statistic.TimeRange range,
@@ -147,6 +147,7 @@ public class StatisticRepositoryImpl implements StatisticRepository<Statistic, S
         /**
          * Get statistic by sales with var args of models.
          * For fill %models%:
+         *
          * @see ru.javavision.jdbc.StatisticRepository#modelWildcards(int).
          */
         GET_STAT("SELECT " +
