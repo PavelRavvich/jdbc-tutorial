@@ -20,7 +20,7 @@ CREATE TABLE IF NOT EXISTS users (
 
 --Добавляем тестовых пользователей.
 INSERT INTO users (id, login, password, role) VALUES (DEFAULT, 'admin', '123', 1);
-INSERT INTO users (id, login, password, role) VALUES (DEFAULT, 'user', '123', 2);
+INSERT INTO users (id, login, password, role) VALUES (DEFAULT, 'user', '1234', 2);
 
 
 --Выгрузить пользователя с ролью.
