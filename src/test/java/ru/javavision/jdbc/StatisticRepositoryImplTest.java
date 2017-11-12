@@ -1,6 +1,5 @@
 package ru.javavision.jdbc;
 
-import com.google.common.collect.Lists;
 import com.sun.istack.internal.NotNull;
 import org.junit.After;
 import org.junit.Before;

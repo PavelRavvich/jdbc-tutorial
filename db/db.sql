@@ -26,8 +26,7 @@ UPDATE users SET password = (?) WHERE id = (?) RETURNING id;
 
 INSERT INTO users (id, login, password, role) VALUES (DEFAULT, 'admin', '123', 1);
 
-INSERT INTO users (id, login, password, role)
-VALUES (DEFAULT, 'user', '123', 2);
+INSERT INTO users (id, login, password, role) VALUES (DEFAULT, 'user', '1234', 2);
 
 --Created 1 time.
 CREATE TABLE IF NOT EXISTS phone_models (
@@ -109,7 +108,7 @@ HAVING sum(p.price) < 10000000
 ORDER BY cost DESC;
 
 
---Получить статистику продаж по убыванию определенных моделей.
+--Получить статистику продаж по убыванию среди определенных моделей.
 SELECT
   m.name,
   sum(p.price) AS cost

@@ -29,7 +29,7 @@ public class StatisticRepositoryImpl implements StatisticRepository<Statistic, S
 
         final SortedSet<Statistic> result = new TreeSet<>(comp);
 
-        final String sql = StatSQL.GET_STAT.v.replace("%models%", modelWildcards(models.size()));
+        final String sql = StatSQL.GET_STAT.QUERY.replace("%models%", modelWildcards(models.size()));
 
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
 
@@ -60,7 +60,7 @@ public class StatisticRepositoryImpl implements StatisticRepository<Statistic, S
 
         final SortedSet<Statistic> statistics = new TreeSet<>(comp);
 
-        try (PreparedStatement statement = connection.prepareStatement(StatSQL.GET_STAT_REVENUE_LESS.v)) {
+        try (PreparedStatement statement = connection.prepareStatement(StatSQL.GET_STAT_REVENUE_LESS.QUERY)) {
 
             execute(threshold, range, statement, statistics);
 
@@ -77,7 +77,7 @@ public class StatisticRepositoryImpl implements StatisticRepository<Statistic, S
 
         final SortedSet<Statistic> statistics = new TreeSet<>(comp);
 
-        try (PreparedStatement statement = connection.prepareStatement(StatSQL.GET_STAT_REVENUE_MORE.v)) {
+        try (PreparedStatement statement = connection.prepareStatement(StatSQL.GET_STAT_REVENUE_MORE.QUERY)) {
 
             execute(threshold, range, statement, statistics);
 
@@ -147,10 +147,10 @@ public class StatisticRepositoryImpl implements StatisticRepository<Statistic, S
                 "HAVING sum(p.price) >= (?) " +
                 "ORDER BY cost DESC;");
 
-        String v;
+        String QUERY;
 
-        StatSQL(String v) {
-            this.v = v;
+        StatSQL(String QUERY) {
+            this.QUERY = QUERY;
         }
     }
 }
