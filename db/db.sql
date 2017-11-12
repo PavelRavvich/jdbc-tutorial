@@ -78,8 +78,8 @@ VALUES (DEFAULT, 3, 35000, now(), 1);
 --Выборка общей суммы продаж по промежутку времени.
 SELECT sum(p.price)
 FROM phones_sale AS p
-WHERE p.date >= '2017-11-04 00:16:22.123102' AND
-      p.date <= '2017-12-05 23:21:31.59098';
+WHERE p.date >= '2017-10-04 00:16:22.123102' AND
+      p.date <= '2017-12-30 23:21:31.59098';
 
 --Получение суммы выручки за модель за промежуток времени
 SELECT *
@@ -89,7 +89,7 @@ SELECT sum(p.price)
 FROM phones_sale AS p
   LEFT JOIN phone_models AS m ON p.model_id = m.id
 WHERE m.name = 'samsung'
-      AND p.date >= '2017-11-02 23:21:31.59098'
+      AND p.date >= '2017-10-02 23:21:31.59098'
       AND p.date <= '2017-12-05 23:21:31.59098';
 
 --Получить модели выручка которых меньше чем 100000 за промежуток времени

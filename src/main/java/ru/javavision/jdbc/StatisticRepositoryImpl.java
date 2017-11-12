@@ -15,6 +15,9 @@ import java.util.*;
  */
 public class StatisticRepositoryImpl implements StatisticRepository<Statistic, Statistic.TimeRange> {
 
+    /**
+     * Connection to database.
+     */
     @NotNull
     private final Connection connection;
 
@@ -22,6 +25,14 @@ public class StatisticRepositoryImpl implements StatisticRepository<Statistic, S
         this.connection = connection;
     }
 
+    /**
+     * Get statistic by sales.
+     *
+     * @param models for select.
+     * @param range time for select.
+     * @param comp for result sorting
+     * @return statistic for decremented models.
+     */
     @Override
     public List<Statistic> getStat(@NotNull final List<PhoneModel> models,
                                    @NotNull final Statistic.TimeRange range,
@@ -53,6 +64,14 @@ public class StatisticRepositoryImpl implements StatisticRepository<Statistic, S
         return new ArrayList<>(result);
     }
 
+    /**
+     * Get statistic for models which revenues less threshold.
+     *
+     * @param threshold the lower sum sale threshold for select.
+     * @param range of time for select.
+     * @param comp  for result sorting
+     * @return statistics of with revenues less threshold.
+     */
     @Override
     public List<Statistic> getStatRevenueLess(@NotNull final BigDecimal threshold,
                                               @NotNull final Statistic.TimeRange range,
@@ -70,6 +89,14 @@ public class StatisticRepositoryImpl implements StatisticRepository<Statistic, S
         return new ArrayList<>(statistics);
     }
 
+    /**
+     * Get statistic for models which revenues more threshold.
+     *
+     * @param threshold the more sum sale threshold for select.
+     * @param range of time for select.
+     * @param comp  for result sorting
+     * @return statistics of with revenues more threshold.
+     */
     @Override
     public List<Statistic> getStatRevenueMore(@NotNull final BigDecimal threshold,
                                               @NotNull final Statistic.TimeRange range,
@@ -87,6 +114,14 @@ public class StatisticRepositoryImpl implements StatisticRepository<Statistic, S
         return new ArrayList<>(statistics);
     }
 
+    /**
+     * Set wildcards and fill result obj.
+     *
+     * @param threshold for select.
+     * @param range for select.
+     * @param statement for query.
+     * @param result for aggregation result of query.
+     */
     private void execute(@NotNull final BigDecimal threshold,
                          @NotNull final Statistic.TimeRange range,
                          @NotNull final PreparedStatement statement,
@@ -105,7 +140,15 @@ public class StatisticRepositoryImpl implements StatisticRepository<Statistic, S
         }
     }
 
+    /**
+     * SQL queries.
+     */
     enum StatSQL {
+        /**
+         * Get statistic by sales with var args of models.
+         * For fill %models%:
+         * @see ru.javavision.jdbc.StatisticRepository#modelWildcards(int).
+         */
         GET_STAT("SELECT " +
                 "  m.name, " +
                 "  sum(p.price) AS cost " +
@@ -119,6 +162,9 @@ public class StatisticRepositoryImpl implements StatisticRepository<Statistic, S
                 "GROUP BY m.name " +
                 "ORDER BY cost DESC;"),
 
+        /**
+         * Get statistic for models which revenues less threshold.
+         */
         GET_STAT_REVENUE_LESS("SELECT " +
                 "  m.name, " +
                 "  sum(p.price) AS cost " +
@@ -132,7 +178,9 @@ public class StatisticRepositoryImpl implements StatisticRepository<Statistic, S
                 "GROUP BY m.name " +
                 "HAVING sum(p.price) <= (?) " +
                 "ORDER BY cost DESC;"),
-
+        /**
+         * Get statistic for models which revenues more threshold.
+         */
         GET_STAT_REVENUE_MORE("SELECT " +
                 "  m.name, " +
                 "  sum(p.price) AS cost " +

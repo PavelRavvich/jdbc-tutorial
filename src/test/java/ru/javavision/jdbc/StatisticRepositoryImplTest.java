@@ -119,6 +119,8 @@ public class StatisticRepositoryImplTest {
         final BigDecimal threshold = new BigDecimal("100000");
         final List<Statistic> statistics = repository.getStatRevenueLess(threshold, range, comparator);
         assertThat(statistics.size(), is(2));
+        assertThat(statistics.get(0).getRevenue(), is(new BigDecimal("65000")));
+        assertThat(statistics.get(1).getRevenue(), is(new BigDecimal("90000")));
     }
 
     /**
